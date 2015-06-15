@@ -1,0 +1,24 @@
+{
+  "name": "linkscaping",
+  "version": "0.0.1",
+  "description": "simple link checker",
+  "main": "app.js",
+  "repository": "",
+  "license": "Proprietary",
+  "private": true,
+  "scripts": {
+    "start": "./node_modules/.bin/nodemon --ignore node_modules server/app.js"
+  },
+  "dependencies": {
+    "bluebird": "1.0.8",
+    "body-parser": "^1.5.2",
+    "ejs": "~0.8.5",
+    "express": "~4.0.0",
+    "express-partials": "~0.2.0",
+    "express-session": "^1.11.2",
+    "forever": "^0.10.11",
+    "nodemon": "^1.2.1",
+    "path": "^0.11.14",
+    "request": "^2.34.0"
+  }
+}
