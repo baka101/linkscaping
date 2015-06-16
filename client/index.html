@@ -1,24 +1,37 @@
 <!DOCTYPE html>
 <html ng-app='linkscaping'>
 <head>
-  <link rel="stylesheet" type="text/css" href="styles.css" />
   <link rel="stylesheet" type="text/css" href="lib/bootstrap/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" type="text/css" href="styles.css" />
 </head>
 <body ng-controller="linkscapingCtrl">
   <div class="container">
     <div class="row">
     
       <h1>Linkscaping</h1>
-      Enter a URL here:
-      <form method="POST">
+      <form class="well" ng-submit="checkStatus()">
+        Enter a URL here:
         <input type="text" name="url" ng-model="uri"></input>
-        <button class="btn" ng-click="checkStatus()"><i class="icon-plus"></i>Go</button>
-        <h3>Status | URL | Title </h3>
-        <h3>{{status.code}} | {{status.url}} | {{status.title}}</h3>
-        <ul class="links">
-          <li ng-repeat="link in links | orderBy:'-code' "> {{link.code}} | {{link.url}} | {{link.title}} </li>
-        </ul>
+        <input type="submit" value="Go"></input>
+        <img class="loading-{{isLoading}}" src="assets/spinner.gif">
       </form>
+      <table class="table table-bordered table-striped">
+        <tr>
+          <th>Status</th>  
+          <th>URL</th> 
+          <th>Title</th>
+        </tr>
+        <tr class="active bold">
+          <td>{{status.code}}</td> 
+          <td>{{status.url}}</td>
+          <td>{{status.title}}</td>
+        </tr>
+        <tr class="{{link.displayClass}}" ng-repeat="link in links | orderBy:'-code'"> 
+          <td>{{link.code}}</td> 
+          <td>{{link.url}}</td> 
+          <td>{{link.title}}</td>
+        </tr>
+      </table>
 
       <script src="lib/angular/angular.js"></script>
       <script src="app/services.js"></script>

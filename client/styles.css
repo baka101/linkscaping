@@ -2,3 +2,15 @@
   list-style: none;
   padding-left: 0;
 }
+
+tr.bold {
+  font-weight: bold;
+}
+
+img.loading-true {
+  visibility: visible;
+}
+
+img.loading-false {
+  visibility: hidden;
+}
