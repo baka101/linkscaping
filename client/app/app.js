@@ -17,6 +17,7 @@ angular.module('linkscaping', [
     //fetch new data
     LinkChecker.checkLink($scope.uri)
       .then(function (data) {
+        $scope.uri = '';
         $scope.isLoading = false;
         $scope.status = data.data;
 
