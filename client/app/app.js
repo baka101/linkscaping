@@ -6,6 +6,7 @@ angular.module('linkscaping', [
   $scope.status = {};
   $scope.links = [];
   $scope.isLoading = false;
+
   var socket = io();
 
 
@@ -13,8 +14,29 @@ angular.module('linkscaping', [
     console.log('Server status:', msg);
   });
 
+  //when url status comes in, add the data to $scope
+  socket.on('urlStatus', function(status){
+    $scope.$apply(function () {
+      console.log('Received url status:', status);
+      $scope.status = status;
+    });
+  });
+
+  //as link statuses come in, add the data to $scope
+  socket.on('linkStatus', function(status){
+    $scope.$apply(function () {
+      console.log('Received link status:', status);
+
+      if (status.code !== 200) {
+        status.displayClass = 'danger';
+      }
+
+      $scope.links.push(status);
+    });
+  });
+
   $scope.checkStatus = function () {
-    
+    //emit test event
     socket.emit('request', 'checkStatus');
 
     //clear out existing data
@@ -27,15 +49,6 @@ angular.module('linkscaping', [
       .then(function (data) {
         $scope.uri = '';
         $scope.isLoading = false;
-        $scope.status = data.data;
-
-        data.data.links.forEach(function (item) {
-          if (item.code !== 200) {
-            item.displayClass = 'danger';
-          }
-        });
-
-        $scope.links = data.data.links;
       });
   }
 

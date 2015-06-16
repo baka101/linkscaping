@@ -29,30 +29,46 @@ app.post('/check', function (request, response) {
 
   utils.getLinksInfo(data.uri, function (err, result) {
     var linksArray = result.links;
-    var urlInfoArray = [];
 
-    var getUrlInfo = function (element) {
-      return new Promise(function (resolve, reject) {
-        utils.getUrlInfo(element, function (err, urlInfo) {
-          if (err) {reject(err);}
-          else {
-            resolve(urlInfo);
-          }
-        });
+    //send event for url status of base url
+    io.emit('urlStatus', {code: result.code, url: result.url, title: result.title});
+
+    //loop through and get url status for each link
+    linksArray.forEach( function (element) {
+      utils.getUrlInfo(element, function (err, urlInfo) {
+        if (err) {console.log(err);}
+        
+        io.emit('linkStatus', urlInfo);
       });
-    };
+    });
 
-    var getLinksInfo = function (array) {
-      return Promise.all(array.map(getUrlInfo));
-    };
+    //send response
+    response.send(200);
+
+
+
+    // var getUrlInfo = function (element) {
+    //   return new Promise(function (resolve, reject) {
+    //     utils.getUrlInfo(element, function (err, urlInfo) {
+    //       if (err) {reject(err);}
+    //       else {
+    //         resolve(urlInfo);
+    //       }
+    //     });
+    //   });
+    // };
+
+    // var getLinksInfo = function (array) {
+    //   return Promise.all(array.map(getUrlInfo));
+    // };
     
-    getLinksInfo(linksArray)
-      .then(function (allLinksInfo) {
-        result.links = allLinksInfo;
-        // console.log('Array of links: ', result.links);
-        io.emit('status', 'done fetching');
-        response.send(200, result);
-      });
+    // getLinksInfo(linksArray)
+    //   .then(function (allLinksInfo) {
+    //     // result.links = allLinksInfo;
+    //     // console.log('Array of links: ', result.links);
+    //     io.emit('status', 'done fetching');
+    //     response.send(200);
+    //   });
 
   });
 
