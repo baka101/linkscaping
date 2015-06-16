@@ -1,4 +1,5 @@
 var express = require('express');
+var Promise = require('bluebird');
 var path = require('path');
 var bodyParser = require('body-parser');
 var utils = require('./utils');
@@ -20,8 +21,31 @@ app.post('/check', function (request, response) {
   var data = request.body;
 
   utils.getLinksInfo(data.uri, function (err, result) {
-    // console.log('Array of links: ', result.links);
-    response.send(200, result);
+    var linksArray = result.links;
+    var urlInfoArray = [];
+
+    var getUrlInfo = function (element) {
+      return new Promise(function (resolve, reject) {
+        utils.getUrlInfo(element, function (err, urlInfo) {
+          if (err) {reject(err);}
+          else {
+            resolve(urlInfo);
+          }
+        });
+      });
+    };
+
+    var getLinksInfo = function (array) {
+      return Promise.all(array.map(getUrlInfo));
+    };
+    
+    getLinksInfo(linksArray)
+      .then(function (allLinksInfo) {
+        result.links = allLinksInfo;
+        console.log('Array of links: ', result.links);
+        response.send(200, result);
+      });
+
   });
 
 });

@@ -16,7 +16,7 @@
         <h3>Status | URL | Title </h3>
         <h3>{{status.code}} | {{status.url}} | {{status.title}}</h3>
         <ul class="links">
-          <li ng-repeat="link in links"> {{link}} </li>
+          <li ng-repeat="link in links | orderBy:'-code' "> {{link.code}} | {{link.url}} | {{link.title}} </li>
         </ul>
       </form>
 
