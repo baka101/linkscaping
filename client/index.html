@@ -1,13 +1,30 @@
 <!DOCTYPE html>
-<html>
+<html ng-app='linkscaping'>
 <head>
   <link rel="stylesheet" type="text/css" href="styles.css" />
+  <link rel="stylesheet" type="text/css" href="lib/bootstrap/dist/css/bootstrap.min.css" />
 </head>
-<body>
-  <h1>Linkscaping</h1>
-  Enter a URL here:
-  <form method="POST">
-    <input type="input" name="url"></input>
-  </form>
+<body ng-controller="linkscapingCtrl">
+  <div class="container">
+    <div class="row">
+    
+      <h1>Linkscaping</h1>
+      Enter a URL here:
+      <form method="POST">
+        <input type="text" name="url" ng-model="uri"></input>
+        <button class="btn" ng-click="checkStatus()"><i class="icon-plus"></i>Go</button>
+        <h3>Status | URL | Title </h3>
+        <h3>{{status.code}} | {{status.url}} | {{status.title}}</h3>
+        <ul class="links">
+          <li ng-repeat="link in links"> {{link}} </li>
+        </ul>
+      </form>
+
+      <script src="lib/angular/angular.js"></script>
+      <script src="app/services.js"></script>
+      <script src="app/app.js"></script>
+    
+    </div> <!-- row -->
+  </div> <!-- container -->
 </body>
 </html>

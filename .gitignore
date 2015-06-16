@@ -1,5 +1,6 @@
 ### node etc ###
 node_modules
+client/lib/
 
 # Logs
 logs
