@@ -1,6 +1,5 @@
 ### node etc ###
 node_modules
-client/lib/
 
 # Logs
 logs
@@ -27,8 +26,8 @@ dist/
 # Dependency directorys
 # Deployed apps should consider commenting these lines out:
 # see https://npmjs.org/doc/faq.html#Should-I-check-my-node_modules-folder-into-git
-node_modules/
-bower_components/
+# node_modules/
+# bower_components/
 
 # Floobits
 .floo
