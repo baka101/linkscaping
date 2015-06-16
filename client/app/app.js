@@ -8,8 +8,15 @@ angular.module('linkscaping', [
   $scope.isLoading = false;
   var socket = io();
 
+
+  socket.on('status', function(msg){
+    console.log('Server status:', msg);
+  });
+
   $scope.checkStatus = function () {
     
+    socket.emit('request', 'checkStatus');
+
     //clear out existing data
     $scope.isLoading = true;
     $scope.status = {};

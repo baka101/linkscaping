@@ -50,6 +50,7 @@ app.post('/check', function (request, response) {
       .then(function (allLinksInfo) {
         result.links = allLinksInfo;
         // console.log('Array of links: ', result.links);
+        io.emit('status', 'done fetching');
         response.send(200, result);
       });
 
@@ -62,6 +63,11 @@ app.post('/check', function (request, response) {
 //////////////////////////////
 io.on('connection', function(socket){
   console.log('a user connected');
+
+  socket.on('request', function(msg){
+    console.log('Request from: ' + msg);
+  });
+
 });
 
 http.listen(8080, function () {
