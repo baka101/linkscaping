@@ -34,41 +34,40 @@ app.post('/check', function (request, response) {
     io.emit('urlStatus', {code: result.code, url: result.url, title: result.title});
 
     //loop through and get url status for each link
-    linksArray.forEach( function (element) {
-      utils.getUrlInfo(element, function (err, urlInfo) {
-        if (err) {console.log(err);}
+    // linksArray.forEach( function (element) {
+    //   utils.getUrlInfo(element, function (err, urlInfo) {
+    //     if (err) {console.log(err);}
         
-        io.emit('linkStatus', urlInfo);
+        
+    //   });
+    // });
+
+    // //send response
+    // response.send(200);
+
+    var getUrlInfo = function (element) {
+      return new Promise(function (resolve, reject) {
+        utils.getUrlInfo(element, function (err, urlInfo) {
+          if (err) {reject(err);}
+          else {
+            io.emit('linkStatus', urlInfo);
+            resolve(urlInfo);
+          }
+        });
       });
-    });
+    };
 
-    //send response
-    response.send(200);
-
-
-
-    // var getUrlInfo = function (element) {
-    //   return new Promise(function (resolve, reject) {
-    //     utils.getUrlInfo(element, function (err, urlInfo) {
-    //       if (err) {reject(err);}
-    //       else {
-    //         resolve(urlInfo);
-    //       }
-    //     });
-    //   });
-    // };
-
-    // var getLinksInfo = function (array) {
-    //   return Promise.all(array.map(getUrlInfo));
-    // };
+    var getLinksInfo = function (array) {
+      return Promise.all(array.map(getUrlInfo));
+    };
     
-    // getLinksInfo(linksArray)
-    //   .then(function (allLinksInfo) {
-    //     // result.links = allLinksInfo;
-    //     // console.log('Array of links: ', result.links);
-    //     io.emit('status', 'done fetching');
-    //     response.send(200);
-    //   });
+    getLinksInfo(linksArray)
+      .then(function (allLinksInfo) {
+        // result.links = allLinksInfo;
+        // console.log('Array of links: ', result.links);
+        io.emit('status', 'done fetching');
+        response.send(200);
+      });
 
   });
 
