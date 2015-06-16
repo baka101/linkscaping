@@ -1,11 +1,12 @@
 angular.module('linkscaping', [
-  'linkscaping.services'
+  'linkscaping.services',
 ])
 
 .controller('linkscapingCtrl', function ($scope, LinkChecker) {
   $scope.status = {};
   $scope.links = [];
   $scope.isLoading = false;
+  var socket = io();
 
   $scope.checkStatus = function () {
     

@@ -5,16 +5,23 @@ var bodyParser = require('body-parser');
 var utils = require('./utils');
 
 var app = express();
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
 
 // Parse JSON (uniform resource locators)
 app.use(bodyParser.json());
 // Parse forms (signup/login)
 app.use(bodyParser.urlencoded({ extended: true }));
 
-
+////////////////////
+//SERVE STATIC FILES
+////////////////////
 var appPath = path.join(__dirname, '../client')
 app.use(express.static(appPath));
 
+///////////////////
+//RESTFUL REQUESTS
+///////////////////
 app.post('/check', function (request, response) {
   console.log('Handling POST request at /check')
   console.log('Request body: ', request.body);
@@ -42,7 +49,7 @@ app.post('/check', function (request, response) {
     getLinksInfo(linksArray)
       .then(function (allLinksInfo) {
         result.links = allLinksInfo;
-        console.log('Array of links: ', result.links);
+        // console.log('Array of links: ', result.links);
         response.send(200, result);
       });
 
@@ -50,6 +57,13 @@ app.post('/check', function (request, response) {
 
 });
 
+///////////////////////////////
+// SOCKET.IO REQUESTS
+//////////////////////////////
+io.on('connection', function(socket){
+  console.log('a user connected');
+});
 
-console.log('Linkscaping app started:  listening on 8080');
-app.listen(8080);
+http.listen(8080, function () {
+  console.log('Linkscaping app started:  listening on 8080');
+});
