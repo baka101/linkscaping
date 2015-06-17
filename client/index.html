@@ -9,9 +9,16 @@
     <div class="row">
     
       <h1>Linkscaping</h1>
-      <form class="well" ng-submit="checkStatus()">
+      <form name="urlForm" class="well" ng-submit="checkStatus(urlForm.$valid)">
         Enter a URL here:
-        <input type="text" name="url" ng-model="uri"></input>
+        <input 
+          type="text" 
+          name="url" 
+          required
+          ng-required='true'
+          ng-pattern= /^(?!mailto:)(?:(?:https?|ftp):\/\/)?(?:\S+(?::\S*)?@)?(?:(?:(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[0-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]+-?)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]+-?)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))|localhost)(?::\d{2,5})?(?:\/[^\s]*)?$/i
+          ng-model="uri">
+        </input>
         <input type="submit" value="Go"></input>
         <img class="loading-{{isLoading}}" src="assets/spinner.gif">
       </form>

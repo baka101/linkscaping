@@ -35,8 +35,15 @@ angular.module('linkscaping', [
     });
   });
 
-  $scope.checkStatus = function () {
+  $scope.checkStatus = function (isValid) {
     //emit test event
+
+    if (!isValid) {
+      alert('Please enter valid URL');
+      $scope.uri = '';
+      return;
+    };
+
     socket.emit('request', 'checkStatus');
 
     //clear out existing data
