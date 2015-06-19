@@ -44,30 +44,34 @@ app.post('/check', function (request, response) {
 
     // //send response
     // response.send(200);
-
-    var getUrlInfo = function (element) {
-      return new Promise(function (resolve, reject) {
-        utils.getUrlInfo(element, function (err, urlInfo) {
-          if (err) {reject(err);}
-          else {
-            io.emit('linkStatus', urlInfo);
-            resolve(urlInfo);
-          }
+    if (linksArray) {
+      var getUrlInfo = function (element) {
+        return new Promise(function (resolve, reject) {
+          utils.getUrlInfo(element, function (err, urlInfo) {
+            if (err) {reject(err);}
+            else {
+              io.emit('linkStatus', urlInfo);
+              resolve(urlInfo);
+            }
+          });
         });
-      });
-    };
+      };
 
-    var getLinksInfo = function (array) {
-      return Promise.all(array.map(getUrlInfo));
-    };
-    
-    getLinksInfo(linksArray)
-      .then(function (allLinksInfo) {
-        // result.links = allLinksInfo;
-        // console.log('Array of links: ', result.links);
-        io.emit('status', 'done fetching');
-        response.send(200);
-      });
+      var getLinksInfo = function (array) {
+        return Promise.all(array.map(getUrlInfo));
+      };
+      
+      getLinksInfo(linksArray)
+        .then(function (allLinksInfo) {
+          // result.links = allLinksInfo;
+          // console.log('Array of links: ', result.links);
+          io.emit('status', 'done fetching');
+          response.send(200);
+        });
+    } else {
+      response.send(200);
+    }
+
 
   });
 
