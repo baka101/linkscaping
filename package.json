@@ -11,12 +11,10 @@
   },
   "dependencies": {
     "bluebird": "1.0.8",
-    "body-parser": "^1.5.2",
     "cheerio": "^0.19.0",
     "ejs": "~0.8.5",
     "express": "~4.0.0",
     "express-partials": "~0.2.0",
-    "express-session": "^1.11.2",
     "express.io": "^1.1.13",
     "forever": "^0.10.11",
     "jquery": "^2.1.4",

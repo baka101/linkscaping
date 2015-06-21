@@ -35,28 +35,27 @@ angular.module('linkscaping', [
     });
   });
 
-  $scope.checkStatus = function (isValid) {
-    //emit test event
+  socket.on('doneFetching', function(status) {
+    $scope.$apply(function () {
+      $scope.uri = '';
+      $scope.isLoading  = false;
+    });
+  });
 
+  $scope.checkStatus = function (isValid) {
     if (!isValid) {
-      alert('Please enter valid URL');
+      alert('Please enter valid URL in the following format: \nhttp://www.example.com');
       $scope.uri = '';
       return;
     };
 
     socket.emit('request', 'checkStatus');
+    socket.emit('checkStatus', $scope.uri);
 
     //clear out existing data
     $scope.isLoading = true;
     $scope.status = {};
     $scope.links = [];
-
-    //fetch new data
-    LinkChecker.checkLink($scope.uri)
-      .then(function (data) {
-        $scope.uri = '';
-        $scope.isLoading = false;
-      });
   }
 
 });

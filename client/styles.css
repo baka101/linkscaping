@@ -14,3 +14,7 @@ img.loading-true {
 img.loading-false {
   visibility: hidden;
 }
+
+input.wide {
+  width: 300px;
+}
