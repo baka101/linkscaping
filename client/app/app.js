@@ -9,6 +9,17 @@ angular.module('linkscaping', [
 
   var socket = io();
 
+  var parseCode = function (code) {
+    if (code <= 200) {
+      return code + ':OK';
+    } else if (code <= 300) {
+      return code + ':Redirect';
+    } else if (code > 300) {
+      return code + ':Error';
+    } else {
+      return 'Error';
+    }
+  };
 
   socket.on('status', function(msg){
     console.log('Server status:', msg);
@@ -18,6 +29,7 @@ angular.module('linkscaping', [
   socket.on('urlStatus', function(status){
     $scope.$apply(function () {
       console.log('Received url status:', status);
+      status.code = parseCode(status.code);
       $scope.status = status;
     });
   });
@@ -31,6 +43,7 @@ angular.module('linkscaping', [
         status.displayClass = 'danger';
       }
 
+      status.code = parseCode(status.code);
       $scope.links.push(status);
     });
   });
