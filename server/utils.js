@@ -66,7 +66,7 @@ exports.getLinksInfo = function(url, cb) {
 // // Create and return a promise object using the 'new' keyword -> this is special to Bluebird's implementation
 // // Promises will be native in ES6 and will use the same syntax as Bluebird
 // return new Promise(function(resolve, reject) {
- 
+
 //     github.search.users({ q: user }, function(error, response) {
 //     // Whatever is passed into reject gets can be accessed in the 'catch' block's callback function
 //     if (error) { reject(error); }
@@ -81,7 +81,7 @@ exports.getLinksInfo = function(url, cb) {
 // };
 
 
-//takes in an html document and returns array of unique links
+//takes in an html document and returns array of unique link urls
 var extractLinks = function(html, baseURL) {
   var results = [];
 
@@ -106,11 +106,11 @@ var extractLinks = function(html, baseURL) {
       urlString = urlString.substring(0, urlString.indexOf('?'));
     }
 
-    //if it's a relative link, add the original url
-    if (urlString[0] === '/') {
+    //if it's a relative link (e.g. something that starts with /), add the original url
+    if ((urlString[0] === '/') && (urlString[1] !== '/')){
       urlString = baseURL + urlString;
     }
-    
+
     //if it's an http url, add it to results
     if (urlString.slice(0, 4) === 'http'){
       // console.log('ADDING: ', urlString);
@@ -125,7 +125,7 @@ var extractLinks = function(html, baseURL) {
   // OLD CODE USING REGEX
   // //grab all the <a> </a> tags
   // var linksStr = html.match(/<a\s+(?:[^>]*?\s+)?href="([^"]*)"/g);
-  
+
   // //go through array and grab just the URL elements
   // linksStr.forEach(function (item) {
   //   var matched = item.match(/href="([^"]*)"/);
